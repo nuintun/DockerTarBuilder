@@ -4,16 +4,16 @@ on:
   workflow_dispatch:
     inputs:
       docker_images:
-        description: '请填写docker镜像名称，多个用英文逗号分开'
+        description: '请填写docker镜像名称，多个用英文逗号分开！'
         required: true
         default: 'alpine:latest,alpine/curl,busybox:stable-glibc'
 
 jobs:
   pull_and_package:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Pull Docker Images and Package
         run: |
@@ -36,7 +36,7 @@ jobs:
           echo "RELEASE_NAME=$release_name" >> $GITHUB_ENV
 
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@master
+        uses: softprops/action-gh-release@v3
         with:
           tag_name: DockerTarBuilder-ARM64
           name: ${{ env.RELEASE_NAME }} for ARM64
@@ -52,7 +52,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload Docker images as release assets
-        uses: softprops/action-gh-release@v2.1.0
+        uses: softprops/action-gh-release@v3
         with:
           tag_name: DockerTarBuilder-ARM64
           files: ${{ github.workspace }}/*.tar.gz

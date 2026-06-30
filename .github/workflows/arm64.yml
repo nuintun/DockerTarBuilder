@@ -4,17 +4,17 @@ on:
   workflow_dispatch:
     inputs:
       docker_images:
-        description: '请填写docker镜像名称 多个用英文逗号分开'
+        description: '请填写docker镜像名称，多个用英文逗号分开！'
         required: true
         default: 'alpine:latest,busybox:stable-glibc'  # 设置默认的 Docker 镜像列表
 
 jobs:
   pull_and_package:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@v7
 
     - name: Pull Docker Images and Package
       run: |
@@ -30,7 +30,7 @@ jobs:
           done
 
     - name: Upload artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: my-artifact
         path: ${{ github.workspace }}/*.tar.gz
